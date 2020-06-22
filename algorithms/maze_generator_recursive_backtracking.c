@@ -18,30 +18,20 @@ struct node {
     uint x;
 };
 
-node* get_next(node*** maze, node* node, uint height, uint width) {
-    int i = rand() % 4;
+node* get_next(node* maze, node* node, uint height, uint width) {
+    int i = rand() & 3;
 
-    i = i % 4;
+    for (uint attempt = 0; attempt < 4; ++attempt) {
+        uint x = node->x + pos_change[i][0];
+        uint y = node->y + pos_change[i][1];
 
-    uint attempt = 0;
-    while (attempt != 4) {
-        attempt += 1;
-        uint x = pos_change[i][0];
-        uint y = pos_change[i][1];
-        x = node->x + x;
-        y = node->y + y;
+        i = (i + 1) & 3;
 
-        i = (i + 1) % 4;
+        uint idx = x * width + y;
 
-        if (x < 0 || y < 0 || y >= width || x >= height) {continue;}
-
-        if (maze[x][y] == NULL) {
-            struct node* new_node = malloc(sizeof(node));
-            new_node->y = y;
-            new_node->x = x;
-            new_node->pred_node = node;
-            maze[x][y] = new_node;
-            return new_node;
+        if (y < width && x < height && maze[idx].pred_node == NULL && ! (x == 0 && y == 0)) {
+            maze[idx].pred_node = node;
+            return & (maze[idx]);
         }
     }
     return NULL;
@@ -49,7 +39,7 @@ node* get_next(node*** maze, node* node, uint height, uint width) {
 
 void print_maze(char** maze, uint size_h) {
     for (uint i = 0; i < size_h; ++i) {
-        printf("%s\n", maze[i]);
+        puts(maze[i]);
     }
 }
 
@@ -59,28 +49,33 @@ char** generate_maze(uint height, uint width) {
         return NULL;
     }
 
+    // x y y y y . . width
+    // x
+    // x
+    // x
+    // .
+    // .
+    // height
+
     // allocate two dimensional array of size (height / 2) * (width / 2) of pointers to nodes
-    struct node*** pre_maze = (struct node***) calloc(height / 2, sizeof(struct node**));
-    for (uint i = 0; i < height / 2; i++) {
-        pre_maze[i] = (struct node**) calloc(width / 2, sizeof(struct node*));
+    //struct node* pre_maze = (struct node*) calloc(height * width / 4, sizeof(struct node));
+    struct node* pre_maze = (struct node*) malloc(height * width / 4 * sizeof(struct node));
+    for (uint i = 0; i < height * width / 4; ++i) {
+        pre_maze[i].pred_node = NULL;
+        pre_maze[i].x = i / (width / 2);
+        pre_maze[i].y = i % (width / 2);
     }
 
     // allocate two dimensional char array of size height * width
-    char** maze = (char**) calloc(height + 1, sizeof(char*));
-    for (uint i = 0; i < height + 1; i++) {
-        maze[i] = (char*) calloc(width + 1, sizeof(char));
-    }
-
+    char** maze = (char**) malloc((height + 1) * sizeof(char*));
     for (uint i = 0; i < height + 1; ++i) {
+        maze[i] = (char*) malloc(width + 1);
         for (uint j = 0; j < width + 1; ++j) {
             maze[i][j] = '#';
         }
     }
 
-    node* start_node = malloc(sizeof(node));
-    start_node->y = start_node->x = 0;
-    pre_maze[0][0] = start_node;
-    node* current_node = get_next(pre_maze, start_node, height / 2, width / 2);
+    node* current_node = get_next(pre_maze, pre_maze, height / 2, width / 2);
 
     while (current_node->x || current_node->y) {
         node* next_node = get_next(pre_maze, current_node, height / 2, width / 2);
@@ -107,15 +102,8 @@ char** generate_maze(uint height, uint width) {
     maze[1][1] = 'S';
     maze[height - 1][width - 1] = 'E';
 
-    //print_maze(maze, height + 1);
+    print_maze(maze, height + 1);
 
-    // free memory used by pre maze
-    for (uint i = 0; i < height / 2; i++ ) {
-        for (uint j = 0; j < width / 2; j++ ) {
-            free(pre_maze[i][j]);
-        }
-        free(pre_maze[i]);
-    }
     free(pre_maze);
 
     // free memory used by maze

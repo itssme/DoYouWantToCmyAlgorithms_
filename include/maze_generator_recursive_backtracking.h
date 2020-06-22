@@ -11,7 +11,7 @@
 const uint pos_change[4][2];
 struct node;
 typedef struct node node;
-node* get_next(node*** maze, node* node, uint height, uint width);
+node* get_next(node* maze, node* node, uint height, uint width);
 void print_maze(char** maze, uint size_h);
 char** generate_maze(uint height, uint width);
 

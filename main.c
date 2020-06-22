@@ -8,8 +8,8 @@
 
 #define GENERATE_MAZE 1
 
-#define MAZE_SIZE_H 10000
-#define MAZE_SIZE_W 10000
+#define MAZE_SIZE_H 50
+#define MAZE_SIZE_W 50
 
 int main() {
     clock_t begin = clock();

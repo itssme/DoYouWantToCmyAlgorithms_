@@ -15,14 +15,14 @@ int main(int argc, char *argv[]) {
 
     clock_t begin = clock();
 
-    srand(begin);
+    //srand(begin);
     char** maze = generate_maze(height, width);
 
     clock_t end = clock();
     double elapsed_secs = (double) (end - begin) / CLOCKS_PER_SEC;
 
     printf("generated %d (%dx%d) mazes in %f seconds\n", GENERATE_MAZE, height, width, elapsed_secs);
-    print_maze(maze, height + 1);
+    //print_maze(maze, height + 1);
 
     // free memory used by maze
     for (uint j = 0; j < height + 1; j++ ) {
