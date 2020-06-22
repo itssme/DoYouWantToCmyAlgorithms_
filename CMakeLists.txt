@@ -12,5 +12,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 include_directories(include)
 
-file(GLOB sources main.c algorithms/maze_generator_recursive_backtracking.c)
-add_executable(DoYouWantToCmyAlgorithms_ ${sources})
+file(GLOB sources algorithms/maze_generator_recursive_backtracking.c)
+add_executable(DoYouWantToCmyAlgorithms_ ${sources} main.c)
+
+add_executable(generator ${sources} generate.c)

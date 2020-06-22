@@ -33,7 +33,7 @@ node* get_next(node*** maze, node* node, uint height, uint width) {
 
         i = (i + 1) % 4;
 
-        if (x < 0 || y < 0 || y >= height || x >= width) {continue;}
+        if (x < 0 || y < 0 || y >= width || x >= height) {continue;}
 
         if (maze[x][y] == NULL) {
             struct node* new_node = malloc(sizeof(node));
@@ -72,7 +72,7 @@ char** generate_maze(uint height, uint width) {
     }
 
     for (uint i = 0; i < height + 1; ++i) {
-        for (uint j = 0; j < height + 1; ++j) {
+        for (uint j = 0; j < width + 1; ++j) {
             maze[i][j] = '#';
         }
     }
@@ -119,7 +119,7 @@ char** generate_maze(uint height, uint width) {
     free(pre_maze);
 
     // free memory used by maze
-    //for (uint i = 0; i < height; i++ ) {
+    //for (uint i = 0; i < height + 1; i++ ) {
     //    free(maze[i]);
     //}
     //free(maze);

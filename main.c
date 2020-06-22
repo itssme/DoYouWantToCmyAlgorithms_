@@ -12,13 +12,6 @@
 #define MAZE_SIZE_W 10000
 
 int main() {
-    /*
-    printf("%lu", sizeof(uint_fast8_t));
-    printf("%lu", sizeof(uint_fast16_t));
-    printf("%lu", sizeof(uint_fast32_t));
-    printf("%lu", sizeof(uint_fast64_t));
-    */
-
     clock_t begin = clock();
 
     for (int i = 0; i < GENERATE_MAZE; ++i) {
@@ -26,7 +19,7 @@ int main() {
         char** maze = generate_maze(MAZE_SIZE_H, MAZE_SIZE_W);
 
         // free memory used by maze
-        for (uint j = 0; j < MAZE_SIZE_H; j++ ) {
+        for (uint j = 0; j < MAZE_SIZE_H + 1; j++ ) {
             free(maze[j]);
         }
         free(maze);
