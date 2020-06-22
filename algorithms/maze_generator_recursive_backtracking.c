@@ -5,7 +5,7 @@
 #include "maze_generator_recursive_backtracking.h"
 #include "types.h"
 
-int pos_change[4][2] = {
+const uint pos_change[4][2] = {
         {0, -1},
         {0, 1},
         {1, 0},

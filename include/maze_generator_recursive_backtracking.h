@@ -8,7 +8,7 @@
 #include "maze_generator_recursive_backtracking.h"
 #include "types.h"
 
-int pos_change[4][2];
+const uint pos_change[4][2];
 struct node;
 typedef struct node node;
 node* get_next(node*** maze, node* node, uint height, uint width);

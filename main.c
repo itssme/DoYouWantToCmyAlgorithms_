@@ -12,6 +12,13 @@
 #define MAZE_SIZE_W 10000
 
 int main() {
+    /*
+    printf("%lu", sizeof(uint_fast8_t));
+    printf("%lu", sizeof(uint_fast16_t));
+    printf("%lu", sizeof(uint_fast32_t));
+    printf("%lu", sizeof(uint_fast64_t));
+    */
+
     clock_t begin = clock();
 
     for (int i = 0; i < GENERATE_MAZE; ++i) {
