@@ -16,12 +16,8 @@ int main() {
 
     for (int i = 0; i < GENERATE_MAZE; ++i) {
         srand(i);
-        char** maze = generate_maze(MAZE_SIZE_H, MAZE_SIZE_W);
+        char* maze = generate_maze(MAZE_SIZE_H, MAZE_SIZE_W);
 
-        // free memory used by maze
-        for (uint j = 0; j < MAZE_SIZE_H + 1; j++ ) {
-            free(maze[j]);
-        }
         free(maze);
     }
 

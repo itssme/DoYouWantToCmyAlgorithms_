@@ -13,37 +13,31 @@ const uint pos_change[4][2] = {
 };
 
 struct node {
-    struct node* pred_node;
-    uint y;
-    uint x;
+    u32 pred_node;
+    u32 y;
+    u32 x;
 };
 
-node* get_next(node* maze, node* node, uint height, uint width) {
+u32 get_next(node* maze, u32 node_idx, u32 height, u32 width) {
     int i = rand() & 3;
 
     for (uint attempt = 0; attempt < 4; ++attempt) {
-        uint x = node->x + pos_change[i][0];
-        uint y = node->y + pos_change[i][1];
+        uint x = maze[node_idx].x + pos_change[i][0];
+        uint y = maze[node_idx].y + pos_change[i][1];
 
         i = (i + 1) & 3;
 
-        uint idx = x * width + y;
+        u32 idx = x * width + y;
 
-        if (y < width && x < height && maze[idx].pred_node == NULL && ! (x == 0 && y == 0)) {
-            maze[idx].pred_node = node;
-            return & (maze[idx]);
+        if (y < width && x < height && maze[idx].pred_node == -1 && ! (x == 0 && y == 0)) {
+            maze[idx].pred_node = node_idx;
+            return idx;
         }
     }
-    return NULL;
+    return (u32) -1;
 }
 
-void print_maze(char** maze, uint size_h) {
-    for (uint i = 0; i < size_h; ++i) {
-        puts(maze[i]);
-    }
-}
-
-char** generate_maze(uint height, uint width) {
+char* generate_maze(u32 height, u32 width) {
     if (height & 1 || width & 1) {
         printf("Maze height and width must be even numbers\n");
         return NULL;
@@ -57,52 +51,50 @@ char** generate_maze(uint height, uint width) {
     // .
     // height
 
-    // allocate two dimensional array of size (height / 2) * (width / 2) of pointers to nodes
-    //struct node* pre_maze = (struct node*) calloc(height * width / 4, sizeof(struct node));
     struct node* pre_maze = (struct node*) malloc(height * width / 4 * sizeof(struct node));
     for (uint i = 0; i < height * width / 4; ++i) {
-        pre_maze[i].pred_node = NULL;
+        pre_maze[i].pred_node = -1;
         pre_maze[i].x = i / (width / 2);
         pre_maze[i].y = i % (width / 2);
     }
 
-    // allocate two dimensional char array of size height * width
-    char** maze = (char**) malloc((height + 1) * sizeof(char*));
-    for (uint i = 0; i < height + 1; ++i) {
-        maze[i] = (char*) malloc(width + 1);
-        for (uint j = 0; j < width + 1; ++j) {
-            maze[i][j] = '#';
-        }
+    uint length = (width + 2) * (height + 1);
+
+    char* maze = (char*) malloc((length));
+    for (uint i = 0; i < length; ++i) {
+        maze[i] = '#';
     }
 
-    node* current_node = get_next(pre_maze, pre_maze, height / 2, width / 2);
+    for (uint i = width + 1; i < length; i += width + 2) {
+        maze[i] = '\n';
+    }
 
-    while (current_node->x || current_node->y) {
-        node* next_node = get_next(pre_maze, current_node, height / 2, width / 2);
+    maze[length - 1] = '\0';
 
-        if (next_node == NULL) {
-            maze[current_node->x * 2 + 1][current_node->y * 2 + 1] = ' ';
-            if (current_node->x > current_node->pred_node->x) {
-                maze[current_node->x * 2][current_node->y * 2 + 1] = ' ';
-            } else if (current_node->x < current_node->pred_node->x) {
-                maze[current_node->x * 2 + 2][current_node->y * 2 + 1] = ' ';
-            } else if (current_node->y < current_node->pred_node->y) {
-                maze[current_node->x * 2 + 1][current_node->y * 2 + 2] = ' ';
-            } else if (current_node->y > current_node->pred_node->y) {
-                maze[current_node->x * 2 + 1][current_node->y * 2] = ' ';
-            }
+    u32 current_node = get_next(pre_maze, 0, height / 2, width / 2);
+    while (pre_maze[current_node].x || pre_maze[current_node].y) {
+        u32 next_node = get_next(pre_maze, current_node, height / 2, width / 2);
 
-            current_node = current_node->pred_node;
-            maze[current_node->x * 2 + 1][current_node->y * 2 + 1] = ' ';
+        if (next_node == (u32) -1) {
+            uint x = pre_maze[current_node].x;
+            uint y = pre_maze[current_node].y;
+
+            uint off_x = (x <= pre_maze[pre_maze[current_node].pred_node].x) + (x < pre_maze[pre_maze[current_node].pred_node].x);
+            uint off_y = (y <= pre_maze[pre_maze[current_node].pred_node].y) + (y < pre_maze[pre_maze[current_node].pred_node].y);
+
+            maze[(x * 2 + off_x) * (width + 2) + y * 2 + off_y] = ' ';
+            maze[(x * 2 + 1) * (width + 2) + y * 2 + 1] = ' ';
+
+            current_node = pre_maze[current_node].pred_node;
         } else {
             current_node = next_node;
         }
     }
 
-    maze[1][1] = 'S';
-    maze[height - 1][width - 1] = 'E';
+    maze[width + 3] = 'S';
+    maze[height * (width + 2) - 3] = 'E';
 
-    print_maze(maze, height + 1);
+    puts(maze);
 
     free(pre_maze);
 

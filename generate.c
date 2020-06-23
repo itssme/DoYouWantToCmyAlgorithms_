@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     clock_t begin = clock();
 
     //srand(begin);
-    char** maze = generate_maze(height, width);
+    char* maze = generate_maze(height, width);
 
     clock_t end = clock();
     double elapsed_secs = (double) (end - begin) / CLOCKS_PER_SEC;
@@ -24,10 +24,6 @@ int main(int argc, char *argv[]) {
     printf("generated %d (%dx%d) mazes in %f seconds\n", GENERATE_MAZE, height, width, elapsed_secs);
     //print_maze(maze, height + 1);
 
-    // free memory used by maze
-    for (uint j = 0; j < height + 1; j++ ) {
-        free(maze[j]);
-    }
     free(maze);
 
     return 0;

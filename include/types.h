@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 typedef unsigned int uint;
+typedef unsigned short u_short;
 
 typedef uint8_t u8;
 typedef uint16_t u16;
