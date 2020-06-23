@@ -11,7 +11,7 @@
 const uint pos_change[4][2];
 struct node;
 typedef struct node node;
-u32 get_next(node* maze, u32 node, u32 height, u32 width);
+const u32 get_next(node* maze, u32 node, u32 height, u32 width);
 char* generate_maze(u32 height, u32 width);
 
 #endif //DOYOUWANTTOCMYALGORITHMS__MAZE_GENERATOR_RECURSIVE_BACKTRACKING_H

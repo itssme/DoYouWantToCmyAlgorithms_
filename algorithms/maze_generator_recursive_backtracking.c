@@ -18,7 +18,7 @@ struct node {
     u32 x;
 };
 
-u32 get_next(node* maze, u32 node_idx, u32 height, u32 width) {
+inline const u32 get_next(node* maze, u32 node_idx, u32 height, u32 width) {
     int i = rand() & 3;
 
     for (uint attempt = 0; attempt < 4; ++attempt) {
@@ -29,7 +29,7 @@ u32 get_next(node* maze, u32 node_idx, u32 height, u32 width) {
 
         u32 idx = x * width + y;
 
-        if (y < width && x < height && maze[idx].pred_node == -1 && ! (x == 0 && y == 0)) {
+        if (y < width && x < height && maze[idx].pred_node == -2) {
             maze[idx].pred_node = node_idx;
             return idx;
         }
@@ -53,7 +53,7 @@ char* generate_maze(u32 height, u32 width) {
 
     struct node* pre_maze = (struct node*) malloc(height * width / 4 * sizeof(struct node));
     for (uint i = 0; i < height * width / 4; ++i) {
-        pre_maze[i].pred_node = -1;
+        pre_maze[i].pred_node = -2;
         pre_maze[i].x = i / (width / 2);
         pre_maze[i].y = i % (width / 2);
     }
@@ -69,10 +69,13 @@ char* generate_maze(u32 height, u32 width) {
         maze[i] = '\n';
     }
 
+    _Static_assert((((u32) -2) < ((u32) -1)), "can't to unsigned int magic on your system :(");
+
     maze[length - 1] = '\0';
 
+    pre_maze[0].pred_node = -1;
     u32 current_node = get_next(pre_maze, 0, height / 2, width / 2);
-    while (pre_maze[current_node].x || pre_maze[current_node].y) {
+    while (pre_maze[current_node].pred_node != (u32) -1) {
         u32 next_node = get_next(pre_maze, current_node, height / 2, width / 2);
 
         if (next_node == (u32) -1) {
