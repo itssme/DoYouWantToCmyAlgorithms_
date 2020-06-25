@@ -13,11 +13,35 @@ const uint pos_change[4][2] = {
 };
 
 struct node {
+#ifdef BIG_MAZE
+    u64 pred_node;
+#else
     u32 pred_node;
+#endif
     u32 y;
     u32 x;
 };
 
+#ifdef BIG_MAZE
+inline const u64 get_next(node* maze, u64 node_idx, u32 height, u32 width) {
+    int i = rand() & 3;
+
+    for (uint attempt = 0; attempt < 4; ++attempt) {
+        uint x = maze[node_idx].x + pos_change[i][0];
+        uint y = maze[node_idx].y + pos_change[i][1];
+
+        i = (i + 1) & 3;
+
+        u64 idx = x * width + y;
+
+        if (y < width && x < height && maze[idx].pred_node == -2) {
+            maze[idx].pred_node = node_idx;
+            return idx;
+        }
+    }
+    return (u64) -1;
+}
+#else
 inline const u32 get_next(node* maze, u32 node_idx, u32 height, u32 width) {
     int i = rand() & 3;
 
@@ -36,6 +60,7 @@ inline const u32 get_next(node* maze, u32 node_idx, u32 height, u32 width) {
     }
     return (u32) -1;
 }
+#endif
 
 char* generate_maze(u32 height, u32 width) {
     if (height & 1 || width & 1) {
@@ -70,15 +95,26 @@ char* generate_maze(u32 height, u32 width) {
     }
 
     _Static_assert((((u32) -2) < ((u32) -1)), "can't to unsigned int magic on your system :(");
+    _Static_assert((((u64) -2) < ((u64) -1)), "can't to unsigned int magic on your system :(");
 
     maze[length - 1] = '\0';
 
-    pre_maze[0].pred_node = -1;
+    #ifdef BIG_MAZE
+    u64 current_node = get_next(pre_maze, 0, height / 2, width / 2);
+    u64 next_node = 0;
+    u64 null_node = (u64) -1;
+    pre_maze[0].pred_node = null_node;
+    #else
     u32 current_node = get_next(pre_maze, 0, height / 2, width / 2);
-    while (pre_maze[current_node].pred_node != (u32) -1) {
-        u32 next_node = get_next(pre_maze, current_node, height / 2, width / 2);
+    u32 next_node = 0;
+    u32 null_node = (u32) -1;
+    pre_maze[0].pred_node = null_node;
+    #endif
 
-        if (next_node == (u32) -1) {
+    while (pre_maze[current_node].pred_node != null_node) {
+         next_node= get_next(pre_maze, current_node, height / 2, width / 2);
+
+        if (next_node == null_node) {
             uint x = pre_maze[current_node].x;
             uint y = pre_maze[current_node].y;
 
