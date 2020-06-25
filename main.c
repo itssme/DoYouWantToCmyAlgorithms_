@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "types.h"
-#include "maze_generator_recursive_backtracking.h"
+#include "maze_generator_backtracking.h"
 
 #define GENERATE_MAZE 1
 

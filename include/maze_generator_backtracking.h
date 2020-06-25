@@ -1,11 +1,11 @@
-#ifndef DOYOUWANTTOCMYALGORITHMS__MAZE_GENERATOR_RECURSIVE_BACKTRACKING_H
-#define DOYOUWANTTOCMYALGORITHMS__MAZE_GENERATOR_RECURSIVE_BACKTRACKING_H
+#ifndef DOYOUWANTTOCMYALGORITHMS__MAZE_GENERATOR_BACKTRACKING_H
+#define DOYOUWANTTOCMYALGORITHMS__MAZE_GENERATOR_BACKTRACKING_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <zconf.h>
 
-#include "maze_generator_recursive_backtracking.h"
+#include "maze_generator_backtracking.h"
 #include "types.h"
 
 const uint pos_change[4][2];
@@ -20,4 +20,4 @@ const u32 get_next(node* maze, u32 node_idx, u32 height, u32 width);
 
 char* generate_maze(u64 height, u64 width);
 
-#endif //DOYOUWANTTOCMYALGORITHMS__MAZE_GENERATOR_RECURSIVE_BACKTRACKING_H
+#endif //DOYOUWANTTOCMYALGORITHMS__MAZE_GENERATOR_BACKTRACKING_H

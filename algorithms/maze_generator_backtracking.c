@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <zconf.h>
 
-#include "maze_generator_recursive_backtracking.h"
+#include "maze_generator_backtracking.h"
 #include "types.h"
 
 const uint pos_change[4][2] = {
@@ -84,7 +84,6 @@ char* generate_maze(u64 height, u64 width) {
     }
 
     u64 length = (width + 2) * (height + 1);
-    printf("lenght is %lu", length);
 
     char* maze = (char*) malloc((length));
     for (u64 i = 0; i < length; ++i) {
@@ -95,17 +94,16 @@ char* generate_maze(u64 height, u64 width) {
         maze[i] = '\n';
     }
 
-    _Static_assert((((u32) -2) < ((u32) -1)), "can't to unsigned int magic on your system :(");
-    _Static_assert((((u64) -2) < ((u64) -1)), "can't to unsigned int magic on your system :(");
-
     maze[length - 1] = '\0';
 
     #ifdef BIG_MAZE
+    _Static_assert((((u64) -2) < ((u64) -1)), "can't to unsigned int magic on your system :(");
     u64 current_node = get_next(pre_maze, 0, height / 2, width / 2);
     u64 next_node = 0;
     u64 null_node = (u64) -1;
     pre_maze[0].pred_node = null_node;
     #else
+    _Static_assert((((u32) -2) < ((u32) -1)), "can't to unsigned int magic on your system :(");
     u32 current_node = get_next(pre_maze, 0, height / 2, width / 2);
     u32 next_node = 0;
     u32 null_node = (u32) -1;
@@ -137,12 +135,10 @@ char* generate_maze(u64 height, u64 width) {
     puts(maze);
     printf("generated maze with %lu * %lu = %lu\n", height, width, height*width);
 
+    // free memory used by pre_maze
     free(pre_maze);
 
     // free memory used by maze
-    //for (uint i = 0; i < height + 1; i++ ) {
-    //    free(maze[i]);
-    //}
     //free(maze);
 
     return maze;
