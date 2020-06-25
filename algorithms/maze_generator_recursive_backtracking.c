@@ -23,18 +23,18 @@ struct node {
 };
 
 #ifdef BIG_MAZE
-inline const u64 get_next(node* maze, u64 node_idx, u32 height, u32 width) {
+inline const u64 get_next(node* maze, u64 node_idx, u64 height, u64 width) {
     int i = rand() & 3;
 
     for (uint attempt = 0; attempt < 4; ++attempt) {
-        u32 x = maze[node_idx].x + pos_change[i][0];
-        u32 y = maze[node_idx].y + pos_change[i][1];
+        u64 x = maze[node_idx].x + pos_change[i][0];
+        u64 y = maze[node_idx].y + pos_change[i][1];
 
         i = (i + 1) & 3;
 
         u64 idx = x * width + y;
 
-        if (y < width && x < height && maze[idx].pred_node == -2) {
+        if (y < width && x < height && maze[idx].pred_node == (u64) -2) {
             maze[idx].pred_node = node_idx;
             return idx;
         }
@@ -62,7 +62,7 @@ inline const u32 get_next(node* maze, u32 node_idx, u32 height, u32 width) {
 }
 #endif
 
-char* generate_maze(u32 height, u32 width) {
+char* generate_maze(u64 height, u64 width) {
     if (height & 1 || width & 1) {
         printf("Maze height and width must be even numbers\n");
         return NULL;
@@ -84,6 +84,7 @@ char* generate_maze(u32 height, u32 width) {
     }
 
     u64 length = (width + 2) * (height + 1);
+    printf("lenght is %lu", length);
 
     char* maze = (char*) malloc((length));
     for (u64 i = 0; i < length; ++i) {
@@ -134,6 +135,7 @@ char* generate_maze(u32 height, u32 width) {
     maze[height * (width + 2) - 3] = 'E';
 
     puts(maze);
+    printf("generated maze with %lu * %lu = %lu\n", height, width, height*width);
 
     free(pre_maze);
 
