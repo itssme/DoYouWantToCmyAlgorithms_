@@ -132,8 +132,8 @@ char* generate_maze(u64 height, u64 width) {
     maze[width + 3] = 'S';
     maze[height * (width + 2) - 3] = 'E';
 
-    puts(maze);
-    printf("generated maze with %lu * %lu = %lu\n", height, width, height*width);
+    //puts(maze);
+    //printf("generated maze with %lu * %lu = %lu\n", height, width, height*width);
 
     // free memory used by pre_maze
     free(pre_maze);
