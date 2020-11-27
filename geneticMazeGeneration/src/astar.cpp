@@ -37,12 +37,6 @@ public:
         return maze[x][y] == '.';
     }
 
-    void print() {
-        for (int i = 0; i < HEIGHT; i++) {
-            puts(maze[i]);
-        }
-    }
-
     uint removeWrongPaths(uint x, uint y) {
         maze[x][y] = 'o';
         if ((x == HEIGHT - 2 && y == WIDTH - 2)) {
@@ -110,8 +104,8 @@ public:
 
         removeWrongPaths(1, 1);
 
-        for (uint y = 1; y < HEIGHT - 1; y++) {
-            for (uint x = 1; x < WIDTH - 1; x++) {
+        for (uint x = 1; x < HEIGHT - 1; x++) {
+            for (uint y = 1; y < WIDTH - 1; y++) {
                 if (maze[x][y] == 'o' && (maze[x - 1][y] == 'o' || maze[x + 1][y] == 'o') &&
                     (maze[x][y - 1] == 'o' || maze[x][y + 1] == 'o')) {
                     maze[x][y] = '.';
@@ -119,8 +113,7 @@ public:
             }
         }
 
-        print();
-        return 0;
+        return loop;
     }
 
     Solver(char** maze) : maze(maze) {}
