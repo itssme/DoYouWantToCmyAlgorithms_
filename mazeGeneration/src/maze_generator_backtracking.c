@@ -97,13 +97,13 @@ char* generate_maze(u64 height, u64 width) {
     maze[length - 1] = '\0';
 
     #ifdef BIG_MAZE
-    _Static_assert((((u64) -2) < ((u64) -1)), "can't to unsigned int magic on your system :(");
+    _Static_assert((((u64) -2) < ((u64) -1)), "can't do unsigned int magic on your system :(");
     u64 current_node = get_next(pre_maze, 0, height / 2, width / 2);
     u64 next_node = 0;
     u64 null_node = (u64) -1;
     pre_maze[0].pred_node = null_node;
     #else
-    _Static_assert((((u32) -2) < ((u32) -1)), "can't to unsigned int magic on your system :(");
+    _Static_assert((((u32) -2) < ((u32) -1)), "can't do unsigned int magic on your system :(");
     u32 current_node = get_next(pre_maze, 0, height / 2, width / 2);
     u32 next_node = 0;
     u32 null_node = (u32) -1;
