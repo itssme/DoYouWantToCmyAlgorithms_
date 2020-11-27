@@ -53,7 +53,7 @@ void free(char** maze) {
     for (int i = 0; i < HEIGHT; i++) {
         free(maze[i]);
     }
-    free(maze);
+    free(*maze);
 }
 
 int main() {
