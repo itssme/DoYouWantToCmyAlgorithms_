@@ -3,8 +3,6 @@
 Collection of some algorithms implemented in C. <br>
 Goal is high performance.
 
-# Maze generator:
-
 ## Build
 
 ```bash
@@ -59,6 +57,3 @@ Look at the output like:
 ###################################################
 generated 1 (10000000x50) mazes in 6.848794 seconds
 ```
-
-# Maze solver:
-TODO

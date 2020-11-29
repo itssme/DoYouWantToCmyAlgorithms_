@@ -42,7 +42,7 @@ int main() {
         fitness = solve(maze, heap);
 
         if (fitness > best_fitness) {
-            if (fitness >= 3500) {
+            if (fitness >= 4500) { // && fitness % 10 == 0) {
                 printf("\e[1;1H\e[2J");
                 printMaze(maze);
                 printf("Fitness: %d\n", fitness);
@@ -50,7 +50,7 @@ int main() {
                 double elapsed_secs = (double) (end - begin) / CLOCKS_PER_SEC;
                 printf("Took %f seconds to reach %d fitness\nCalculating at %f muations/s\n", elapsed_secs, fitness, loops / elapsed_secs);
                 usleep(100000);
-                exit(0);
+                //exit(0);
             }
             best_fitness = fitness;
             resetMaze(maze);

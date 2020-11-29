@@ -122,7 +122,7 @@ snumber solve(Maze* maze, Heap* heap) {
             }
             setContent(maze, 1, 1, PATH);
 
-            return loops;
+            return loops + len;
         }
 
 #ifdef INFO
