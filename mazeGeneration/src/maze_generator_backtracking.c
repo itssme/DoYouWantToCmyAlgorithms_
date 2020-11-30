@@ -5,6 +5,9 @@
 #include "maze_generator_backtracking.h"
 #include "types.h"
 
+#define WALL '#'
+#define EMPTY '.'
+
 const uint pos_change[4][2] = {
         {0, -1},
         {0, 1},
@@ -87,7 +90,7 @@ char* generate_maze(u64 height, u64 width) {
 
     char* maze = (char*) malloc((length));
     for (u64 i = 0; i < length; ++i) {
-        maze[i] = '#';
+        maze[i] = WALL;
     }
 
     for (u64 i = width + 1; i < length; i += width + 2) {
@@ -120,8 +123,8 @@ char* generate_maze(u64 height, u64 width) {
             uint off_x = (x <= pre_maze[pre_maze[current_node].pred_node].x) + (x < pre_maze[pre_maze[current_node].pred_node].x);
             uint off_y = (y <= pre_maze[pre_maze[current_node].pred_node].y) + (y < pre_maze[pre_maze[current_node].pred_node].y);
 
-            maze[(x * 2 + off_x) * (width + 2) + y * 2 + off_y] = ' ';
-            maze[(x * 2 + 1) * (width + 2) + y * 2 + 1] = ' ';
+            maze[(x * 2 + off_x) * (width + 2) + y * 2 + off_y] = EMPTY;
+            maze[(x * 2 + 1) * (width + 2) + y * 2 + 1] = EMPTY;
 
             current_node = pre_maze[current_node].pred_node;
         } else {
@@ -129,8 +132,10 @@ char* generate_maze(u64 height, u64 width) {
         }
     }
 
-    maze[width + 3] = 'S';
-    maze[height * (width + 2) - 3] = 'E';
+    // to make this compatible with the other algo in this project, S and E are removed
+    maze[width + 3] = EMPTY;
+    //maze[width + 3] = 'S';
+    //maze[height * (width + 2) - 3] = 'E';
 
     //puts(maze);
     //printf("generated maze with %lu * %lu = %lu\n", height, width, height*width);

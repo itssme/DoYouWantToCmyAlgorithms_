@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     double elapsed_secs = (double) (end - begin) / CLOCKS_PER_SEC;
 
     puts(maze);
-    printf("generated %d (%dx%d) mazes in %f seconds\n", GENERATE_MAZE, height, width, elapsed_secs);
+    //printf("generated %d (%dx%d) mazes in %f seconds\n", GENERATE_MAZE, height, width, elapsed_secs);
 
     free(maze);
 
