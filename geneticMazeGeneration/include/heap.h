@@ -10,7 +10,7 @@
 typedef struct Point {
     snumber x;
     snumber y;
-    snumber baseCost;
+    //snumber baseCost;
     snumber backPointIdx;
     float heuCost;
 } Point;

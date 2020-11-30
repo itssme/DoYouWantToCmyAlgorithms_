@@ -15,6 +15,7 @@ typedef enum FieldState {
 typedef struct BackPoint {
     snumber x;
     snumber y;
+    snumber baseCost;
     snumber predIndex;
 } BackPoint;
 

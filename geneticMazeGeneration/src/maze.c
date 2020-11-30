@@ -8,11 +8,13 @@
 Maze* newMaze(snumber width, snumber height) {
     width++;
     snumber length = width * height;
+    printf("Allocating %luMiB of memory for maze\n",
+           (sizeof(Maze) + length + sizeof(BackPoint) * length) / 1049000);
 
     Maze* maze = malloc(sizeof(Maze) + length + sizeof(BackPoint) * length);
     maze->width = width;
     maze->height = height;
-    maze->data = (((char*) (maze + 1)) + sizeof(BackPoint) * length);
+    maze->data = (((char*) (maze + 1)) + (sizeof(BackPoint) * length));
     memset(maze->data, EMPTY, length);
     maze->backIdx = 0;
     maze->back = (BackPoint*) (maze + 1);
@@ -66,6 +68,7 @@ static void insertBack(Maze* maze, const Point* p, Point* nP) {
     maze->back[maze->backIdx].x = nP->x;
     maze->back[maze->backIdx].y = nP->y;
     maze->back[maze->backIdx].predIndex = p->backPointIdx;
+    maze->back[maze->backIdx].baseCost = maze->back[p->backPointIdx].baseCost + 1;
     nP->backPointIdx = maze->backIdx;
 }
 
@@ -82,7 +85,7 @@ static void insertNext(Maze* maze, Heap* heap, const Point* p, snumber x, snumbe
     snumber x_diff = x - (maze->width - 3);
     snumber y_diff = y - (maze->height - 2);
 
-    nP.baseCost = p->baseCost + 1;
+    //nP.baseCost = p->baseCost + 1; // extract from back array if needed in heucost
     //nP.heuCost = nP.baseCost + sqrtf(x_diff * x_diff + y_diff * y_diff) * 1.01;//(abs(x_diff) + abs(y_diff)) * 1.01;
     nP.heuCost = (abs(x_diff) + abs(y_diff)) * 1.01;
     insertBack(maze, p, &nP);
@@ -93,7 +96,9 @@ static void insertNext(Maze* maze, Heap* heap, const Point* p, snumber x, snumbe
 snumber solve(Maze* maze, Heap* heap) {
     clearHeap(heap);
 
-    Point p = {1, 1, 0, 0, 0};
+    Point p = {1, 1, 0, 0}; //0};
+    maze->back[0].baseCost = 0;
+    maze->back[0].predIndex = 0;
 
     heapInsert(heap, &p);
     setContent(maze, p.x, p.y, EXPLORED);
