@@ -10,8 +10,11 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 include_directories(include)
 
-# comment this line out if you want very fast generation for small mazes, the maximum size for small maze will be height * width = max u32
+# comment this line if you want very fast generation for small mazes, the maximum size for small maze will be height * width = max u32
 add_definitions(-DBIG_MAZE)
+
+# comment this line if you don't want the time it took to generate the maze printed at the end
+#add_definitions(-DBENCH)
 
 file(GLOB sources src/maze_generator_backtracking.c)
 add_executable(DoYouWantToCmyAlgorithms_ ${sources} main.c)

@@ -14,8 +14,6 @@ int main(int argc, char *argv[]) {
     snumber width = strtoul(argv[2], NULL, 10) + 1;
     snumber height = strtoul(argv[1], NULL, 10) + 1;
 
-    printf("w=%d, h=%d\n", width, height);
-
     Maze* maze = newMaze(width, height);
     Heap* heap = newHeap();
 

@@ -4,7 +4,7 @@
 #include "types.h"
 
 // this struct would be better if it was only 16 bytes large (gcc will we able to put one point
-//  into one xmm register and thus improve performance)
+//  into one xmm register and thus improve performance) (DONE)
 // maybe don't store x,y here but use backPointIdx to lookup those values in the
 //  maze back array if needed (that would be O(1) anyway)
 typedef struct Point {

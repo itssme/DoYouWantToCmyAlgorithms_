@@ -6,10 +6,15 @@
 #include "types.h"
 #include "maze_generator_backtracking.h"
 
-#define GENERATE_MAZE 1
 
+int main(int argc, char* argv[]) {
+    if (argc != 3 && argc != 4) {
+        printf("Usage: ./generator <height> <width> [random] > maze.txt\n"
+               "If the third parameter [random] is set the random number generator will\n"
+               "be initialized with the current time. (Just provide something as 3rd param)");
+        return 1;
+    }
 
-int main(int argc, char *argv[]) {
     uint height = strtoul(argv[1], NULL, 10);
     uint width = strtoul(argv[2], NULL, 10);
 
@@ -17,15 +22,22 @@ int main(int argc, char *argv[]) {
         srand(clock());
     }
 
+#ifdef BENCH
     clock_t begin = clock();
+#endif
 
     char* maze = generate_maze(height, width);
 
+#ifdef BENCH
     clock_t end = clock();
     double elapsed_secs = (double) (end - begin) / CLOCKS_PER_SEC;
+#endif
 
     puts(maze);
-    //printf("generated %d (%dx%d) mazes in %f seconds\n", GENERATE_MAZE, height, width, elapsed_secs);
+
+#ifdef BENCH
+    printf("generated (%dx%d) maze in %f seconds\n", height, width, elapsed_secs);
+#endif
 
     free(maze);
 

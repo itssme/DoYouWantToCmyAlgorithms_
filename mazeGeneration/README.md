@@ -1,13 +1,9 @@
-# DoYouWantToCmyAlgorithms?
-
-Collection of some algorithms implemented in C. <br>
-Goal is high performance.
-
+# Maze generator:
 ## Build
 
 ```bash
 git clone https://github.com/itssme/DoYouWantToCmyAlgorithms_
-cd DoYouWantToCmyAlgorithms_
+cd DoYouWantToCmyAlgorithms_/mazeGeneration
 mkdir build
 cd build
 cmake ..
@@ -25,17 +21,16 @@ Will create a 10 by 10 field Maze and print:
 
 ```bash
 ###########
-#S  #     #
-### # ### #
-# #   #   #
-# ##### ###
-# #   #   #
-# # # ### #
-#   # #   #
-# ### # ###
-#   #    E#
+#...#.....#
+###.# ###.#
+#.#...#...#
+#.#####.###
+#.#...#...#
+#.#.#.###.#
+#...#.#...#
+#.###.#.###
+#...#.....#
 ###########
-generated 1 (10x10) mazes in 0.000432 seconds
 ```
 
 For bigger mazes pipe output into a file:
@@ -43,17 +38,19 @@ For bigger mazes pipe output into a file:
 >> ./generator 10000000 50 > maze.txt  
 ```
 
+If the definition `BENCH` is set at compile time, additional output with the time will be printed.
+
 Look at the output like:
 ```bash
 >> tail maze.txt 
-# # # # ### # # # # # # # # ### # # ############# #
-# # # # #   # # # #   # # # #     #             # #
-### # # # # # # # ##### # # ##### ############# # #
-#   # # # # # # #     # # # #   # #     #   #   # #
-# # ### # ### # ##### # # # # # ### ### # # # ### #
-# # #   #   #   #   # # # # # # #   # #   # # #   #
-# ### ##### ##### # ### # # # # # ### ##### # # # #
-#                 #     # #   #           #     #E#
+#.#.#.#.###.#.#.#.#.#.#.#.#.###.#.#.#############.#
+#.#.#.#.#...#.#.#.#...#.#.#.#.....#.............#.#
+###.#.#.#.#.#.#.#.#####.#.#.#####.#############.#.#
+#...#.#.#.#.#.#.#.....#.#.#.#...#.#.....#...#...#.#
+#.#.###.#.###.#.#####.#.#.#.#.#.###.###.#.#.#.###.#
+#.#.#...#...#...#...#.#.#.#.#.#.#...#.#...#.#.#...#
+#.###.#####.#####.#.###.#.#.#.#.#.###.#####.#.#.#.#
+#.................#.....#.#...#...........#.......#
 ###################################################
-generated 1 (10000000x50) mazes in 6.848794 seconds
+generated (10000000x50) maze in 6.848794 seconds
 ```
