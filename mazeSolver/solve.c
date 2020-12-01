@@ -4,7 +4,13 @@
 #include "include/maze.h"
 #include "include/heap.h"
 
-int main(int argc, char *argv[]) {
+#ifdef VISUALIZE
+
+#include <ncurses.h>
+
+#endif
+
+int main(int argc, char* argv[]) {
     if (argc != 3) {
         printf("Usage: ./solver <height> <width> < maze.txt");
         return 1;
@@ -40,7 +46,12 @@ int main(int argc, char *argv[]) {
     clock_t end = clock();
     double elapsed_secs = (double) (end - begin) / CLOCKS_PER_SEC;
 
+#ifdef VISUALIZE
+    usleep(5000000);
+#else
     printMaze(maze);
+#endif
+
     printf("Took %f seconds to solve maze (height=%d, width=%d)", elapsed_secs, height, width);
 
     freeHeap(&heap);

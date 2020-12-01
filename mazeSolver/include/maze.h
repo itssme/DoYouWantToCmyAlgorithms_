@@ -1,6 +1,15 @@
 #ifndef GENETICMAZE_MAZE_H
 #define GENETICMAZE_MAZE_H
 
+#ifdef VISUALIZE
+
+#include <ncurses.h>
+#include <unistd.h>
+
+WINDOW* window;
+bool setup;
+#endif
+
 #include "types.h"
 #include "heap.h"
 
@@ -10,6 +19,9 @@ typedef enum FieldState {
     NEWLINE = 2,
     PATH = 3,
     EXPLORED = 4
+#ifdef VISUALIZE
+    , EXPLORING = 5
+#endif
 } FieldState;
 
 typedef struct BackPoint {
@@ -29,11 +41,23 @@ typedef struct Maze {
 } Maze;
 
 Maze* newMaze(snumber width, snumber height);
+
 void freeMaze(Maze** maze);
+
 void printMaze(Maze* maze);
+
 snumber solve(Maze* maze, Heap* heap);
+
 char getContent(Maze* maze, snumber x, snumber y);
+
 void setContent(Maze* maze, snumber x, snumber y, FieldState state);
+
 void resetMaze(Maze* maze);
+
+#ifdef VISUALIZE
+
+void setContentCurses(snumber x, snumber y, enum FieldState state);
+
+#endif
 
 #endif

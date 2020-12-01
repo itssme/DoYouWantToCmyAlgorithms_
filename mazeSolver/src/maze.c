@@ -28,10 +28,31 @@ Maze* newMaze(snumber width, snumber height) {
     memset(maze->data + 1, WALL, width - 3);
     memset(maze->data + 1 + (length - width), WALL, width - 3);
 
+#ifdef VISUALIZE
+    initscr();
+    cbreak();
+    curs_set(0);
+    noecho();
+    setup = TRUE;
+
+    window = newwin(height, width, 0, 0);
+    start_color();
+
+    init_pair(EMPTY, COLOR_BLACK, COLOR_BLACK);
+    init_pair(WALL, COLOR_RED, COLOR_RED);
+    init_pair(NEWLINE, COLOR_YELLOW, COLOR_YELLOW);
+    init_pair(PATH, COLOR_GREEN, COLOR_GREEN);
+    init_pair(EXPLORED, COLOR_BLUE, COLOR_BLUE);
+    init_pair(EXPLORING, COLOR_CYAN, COLOR_CYAN);
+#endif
+
     return maze;
 }
 
 void freeMaze(Maze** maze) {
+#ifdef VISUALIZE
+    endwin();
+#endif
     if (maze != NULL) {
         free(*maze);
         *maze = NULL;
@@ -59,7 +80,22 @@ char getContent(Maze* maze, snumber x, snumber y) {
     return maze->data[y * maze->width + x];
 }
 
+#ifdef VISUALIZE
+void setContentCurses(snumber x, snumber y, enum FieldState state) {
+    wattron(window, COLOR_PAIR(state));
+    mvwaddch(window, y, x, ' ');
+    wattroff(window, COLOR_PAIR(state));
+    if (setup == FALSE) {
+        wrefresh(window);
+        usleep(5000);
+    }
+}
+#endif
+
 void setContent(Maze* maze, snumber x, snumber y, FieldState state) {
+#ifdef VISUALIZE
+    setContentCurses(x, y, state);
+#endif
     maze->data[y * maze->width + x] = state;
 }
 
@@ -90,11 +126,15 @@ static void insertNext(Maze* maze, Heap* heap, const Point* p, snumber x, snumbe
     nP.heuCost = (abs(x_diff) + abs(y_diff)) * 1.01;
     insertBack(maze, p, &nP);
     heapInsert(heap, &nP);
-    setContent(maze, x, y, EXPLORED);
+    setContent(maze, x, y, EXPLORING);
 }
 
 snumber solve(Maze* maze, Heap* heap) {
     clearHeap(heap);
+
+#ifdef VISUALIZE
+    setup = FALSE;
+#endif
 
     Point p = {1, 1, 0, 0}; //0};
     maze->back[0].baseCost = 0;
@@ -129,6 +169,10 @@ snumber solve(Maze* maze, Heap* heap) {
 
             return loops + len;
         }
+
+#ifdef VISUALIZE
+        setContentCurses(p.x, p.y, EXPLORED);
+#endif
 
 #ifdef INFO
         printMaze(maze);
