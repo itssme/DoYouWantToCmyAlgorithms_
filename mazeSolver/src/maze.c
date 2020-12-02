@@ -126,7 +126,11 @@ static void insertNext(Maze* maze, Heap* heap, const Point* p, snumber x, snumbe
     nP.heuCost = (abs(x_diff) + abs(y_diff)) * 1.01;
     insertBack(maze, p, &nP);
     heapInsert(heap, &nP);
+#ifdef VISUALIZE
     setContent(maze, x, y, EXPLORING);
+#else
+    setContent(maze, x, y, EXPLORED);
+#endif
 }
 
 snumber solve(Maze* maze, Heap* heap) {
