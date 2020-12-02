@@ -14,6 +14,11 @@ typedef struct Pair {
 } Pair;
 
 int main() {
+#ifdef VISUALIZE
+    printf("Warning, curses version is not intended for use with genetic maze generator! (Build without -DVISUALIZE)\nWaiting 5 seconds then starting....\n");
+    sleep(5);
+#endif
+
     Maze* maze = newMaze(100, 50);
     Heap* heap = newHeap();
     init_random();
@@ -42,7 +47,7 @@ int main() {
         fitness = solve(maze, heap);
 
         if (fitness > best_fitness) {
-            if (fitness >= 4500) { // && fitness % 10 == 0) {
+            if (fitness >= 2000) { // && fitness % 10 == 0) {
                 printf("\e[1;1H\e[2J");
                 printMaze(maze);
                 printf("Fitness: %d\n", fitness);

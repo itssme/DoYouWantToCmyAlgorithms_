@@ -35,6 +35,8 @@ Maze* newMaze(snumber width, snumber height) {
     noecho();
     setup = TRUE;
 
+    resizeterm(height, width);
+
     window = newwin(height, width, 0, 0);
     start_color();
 
@@ -99,12 +101,19 @@ void setContent(Maze* maze, snumber x, snumber y, FieldState state) {
     maze->data[y * maze->width + x] = state;
 }
 
-static void insertBack(Maze* maze, const Point* p, Point* nP) {
+static void insertBack(Maze* maze, const Point* p, Point* nP, snumber x, snumber y) {
     maze->backIdx++;
     maze->back[maze->backIdx].x = nP->x;
     maze->back[maze->backIdx].y = nP->y;
     maze->back[maze->backIdx].predIndex = p->backPointIdx;
     maze->back[maze->backIdx].baseCost = maze->back[p->backPointIdx].baseCost + 1;
+
+    snumber x_diff = x - (maze->width - 3);
+    snumber y_diff = y - (maze->height - 2);
+    //nP->heuCost = nP.baseCost + sqrtf(x_diff * x_diff + y_diff * y_diff) * 1.01;//(abs(x_diff) + abs(y_diff)) * 1.01;
+    //nP->heuCost = maze->back[maze->backIdx].baseCost + (abs(x_diff) + abs(y_diff)) * 1.01;  // A*
+    nP->heuCost = maze->back[maze->backIdx].baseCost; // Dijkstra;
+    // nP->heuCost = (abs(x_diff) + abs(y_diff)) * 1.01;
     nP->backPointIdx = maze->backIdx;
 }
 
@@ -118,13 +127,7 @@ static void insertNext(Maze* maze, Heap* heap, const Point* p, snumber x, snumbe
     nP.x = x;
     nP.y = y;
 
-    snumber x_diff = x - (maze->width - 3);
-    snumber y_diff = y - (maze->height - 2);
-
-    //nP.baseCost = p->baseCost + 1; // extract from back array if needed in heucost
-    //nP.heuCost = nP.baseCost + sqrtf(x_diff * x_diff + y_diff * y_diff) * 1.01;//(abs(x_diff) + abs(y_diff)) * 1.01;
-    nP.heuCost = (abs(x_diff) + abs(y_diff)) * 1.01;
-    insertBack(maze, p, &nP);
+    insertBack(maze, p, &nP, x, y);
     heapInsert(heap, &nP);
 #ifdef VISUALIZE
     setContent(maze, x, y, EXPLORING);
@@ -171,7 +174,7 @@ snumber solve(Maze* maze, Heap* heap) {
             }
             setContent(maze, 1, 1, PATH);
 
-            return loops + len;
+            return loops;
         }
 
 #ifdef VISUALIZE
@@ -181,10 +184,6 @@ snumber solve(Maze* maze, Heap* heap) {
 #ifdef INFO
         printMaze(maze);
 #endif
-
-        //setContent(maze, p.x, p.y, PATH);
-        //printMaze(maze);
-        //printf("x= %d y=%d\n", p.x, p.y);
 
         insertNext(maze, heap, &p, 0, 1);
         insertNext(maze, heap, &p, 0, -1);
@@ -205,6 +204,7 @@ snumber solve(Maze* maze, Heap* heap) {
         getchar();
 #endif
 
+        // Diagonal Moves
         //insertNext(maze, heap, p, -1, -1);
         //insertNext(maze, heap, p, 1, 1);
         //insertNext(maze, heap, p, -1, 1);

@@ -33,6 +33,10 @@ int main(int argc, char* argv[]) {
     double elapsed_secs = (double) (end - begin) / CLOCKS_PER_SEC;
 #endif
 
+    if (maze == NULL) {
+        return 1;
+    }
+
     puts(maze);
 
 #ifdef BENCH
