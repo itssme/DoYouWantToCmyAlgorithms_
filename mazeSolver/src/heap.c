@@ -3,7 +3,7 @@
 #include "heap.h"
 
 Heap* newHeap() {
-    Heap* heap = malloc(sizeof(heap));
+    Heap* heap = malloc(sizeof(Heap));
 
     heap->size = 0;
     heap->capacity = 16;

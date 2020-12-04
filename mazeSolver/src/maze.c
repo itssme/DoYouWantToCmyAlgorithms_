@@ -89,7 +89,7 @@ void setContentCurses(snumber x, snumber y, enum FieldState state) {
     wattroff(window, COLOR_PAIR(state));
     if (setup == FALSE) {
         wrefresh(window);
-        usleep(5000);
+        usleep(10000);
     }
 }
 #endif
@@ -111,9 +111,9 @@ static void insertBack(Maze* maze, const Point* p, Point* nP, snumber x, snumber
     snumber x_diff = x - (maze->width - 3);
     snumber y_diff = y - (maze->height - 2);
     //nP->heuCost = nP.baseCost + sqrtf(x_diff * x_diff + y_diff * y_diff) * 1.01;//(abs(x_diff) + abs(y_diff)) * 1.01;
-    //nP->heuCost = maze->back[maze->backIdx].baseCost + (abs(x_diff) + abs(y_diff)) * 1.01;  // A*
+    //nP->heuCost = maze->back[maze->backIdx].baseCost + (abs(x_diff) + abs(y_diff)) * 1.01;  // A* (with Manhattan distance)
     nP->heuCost = maze->back[maze->backIdx].baseCost; // Dijkstra;
-    // nP->heuCost = (abs(x_diff) + abs(y_diff)) * 1.01;
+    //nP->heuCost = (abs(x_diff) + abs(y_diff)) * 1.01; // Best-first-search
     nP->backPointIdx = maze->backIdx;
 }
 
@@ -221,6 +221,8 @@ snumber solve(Maze* maze, Heap* heap) {
 void resetMaze(Maze* maze) {
     for (int i = 0; i < maze->height; ++i) {
         for (int j = 0; j < maze->width - 1; ++j) {
+            // WARNING
+            // Narrowing conversion from 'int' to signed type 'char' is implementation-defined
             maze->data[i * maze->width + j] = maze->data[i * maze->width + j] == WALL;
         }
     }
