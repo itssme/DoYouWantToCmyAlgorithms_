@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // size input is calculated + 1 because the maze generator does not count  the outer walls (right and below) to size
+    // size input is calculated + 1 because the maze generator does not count the outer walls (right and below) to size
     snumber width = strtoul(argv[2], NULL, 10) + 1;
     snumber height = strtoul(argv[1], NULL, 10) + 1;
 

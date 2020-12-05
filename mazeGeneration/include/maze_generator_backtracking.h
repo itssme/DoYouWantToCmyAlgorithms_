@@ -8,7 +8,7 @@
 #include "maze_generator_backtracking.h"
 #include "types.h"
 
-const uint pos_change[4][2];
+extern const uint pos_change[4][2];
 struct node;
 typedef struct node node;
 

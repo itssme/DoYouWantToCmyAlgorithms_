@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "queue.h"
 
 Queue* newQueue() {
@@ -9,7 +10,7 @@ Queue* newQueue() {
     queue->read_index = 0;
     queue->capacity = 64;
     queue->data = malloc(sizeof(Point) * queue->capacity);
-    
+
     return queue;
 }
 

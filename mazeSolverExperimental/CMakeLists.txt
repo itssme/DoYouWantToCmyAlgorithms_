@@ -3,7 +3,7 @@ project(mazeSolving C)
 
 set(CMAKE_C_STANDARD 11)
 
-#set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Release)
 
 add_compile_options("-Wall")
 add_compile_options("-Wextra")
