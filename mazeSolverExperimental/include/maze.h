@@ -43,7 +43,7 @@ void setContent(Maze* maze, int index, FieldState state);
 
 #ifdef VISUALIZE
 
-void setContentCurses(int x, int y, enum FieldState state);
+void setContentCurses(Maze* maze, int index, enum FieldState state);
 
 #endif
 

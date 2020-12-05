@@ -78,8 +78,10 @@ char getContent(Maze* maze, int index) {
 }
 
 #ifdef VISUALIZE
-void setContentCurses(int x, int y, enum FieldState state) {
+void setContentCurses(Maze* maze, int index, enum FieldState state) {
     wattron(window, COLOR_PAIR(state));
+    int x = index % maze->width;
+    int y = index / maze->width;
     mvwaddch(window, y, x, ' ');
     wattroff(window, COLOR_PAIR(state));
     if (setup == FALSE) {
@@ -91,7 +93,7 @@ void setContentCurses(int x, int y, enum FieldState state) {
 
 void setContent(Maze* maze, int index, FieldState state) {
 #ifdef VISUALIZE
-    setContentCurses(x, y, state);
+    setContentCurses(maze, index, state);
 #endif
     maze->data[index] = state;
 }
@@ -103,7 +105,7 @@ static void insertNext(Maze* maze, Queue* queue, int index, int read_index) {
     Point p = {read_index, index};
     queueInsert(queue, &p);
 #ifdef VISUALIZE
-    setContent(maze, x, y, EXPLORING);
+    setContent(maze, index, EXPLORING);
 #else
     setContent(maze, index, EXPLORED);
 #endif
@@ -132,7 +134,7 @@ int solve(Maze* maze, Queue* queue) {
         }
 
 #ifdef VISUALIZE
-        setContentCurses(p.x, p.y, EXPLORED);
+        setContentCurses(maze, p.index, EXPLORED);
 #endif
 
         insertNext(maze, queue, p.index + 1, read_index);
