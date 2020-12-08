@@ -11,7 +11,7 @@ set(CMAKE_BUILD_TYPE Release)
 add_compile_options("-O3")
 
 #add_definitions(-DINFO)
-#add_definitions(-DVISUALIZE)
+add_definitions(-DVISUALIZE)
 
 include_directories(include)
 file(GLOB sources src/maze_generator_backtracking.c src/heap.c src/maze.c src/random.c)
