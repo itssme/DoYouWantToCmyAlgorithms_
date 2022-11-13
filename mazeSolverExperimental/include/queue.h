@@ -15,7 +15,7 @@ typedef struct Queue {
     Point* data;
 } Queue;
 
-Queue* newQueue();
+Queue* newQueue(void);
 void freeQueue(Queue** queue);
 void queueInsert(Queue* queue, Point* point);
 int queueRead(Queue* queue, Point* point, int* index);

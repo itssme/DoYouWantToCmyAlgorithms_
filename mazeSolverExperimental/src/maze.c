@@ -7,6 +7,11 @@
 
 typedef const char* string;
 
+#ifdef VISUALIZE
+WINDOW* window = NULL;
+bool setup = NULL;
+#endif
+
 Maze* newMaze(int width, int height) {
     width++;
     int length = width * height;

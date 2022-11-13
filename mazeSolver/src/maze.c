@@ -5,6 +5,11 @@
 
 #include "maze.h"
 
+#ifdef VISUALIZE
+WINDOW* window = NULL;
+bool setup = NULL;
+#endif
+
 Maze* newMaze(snumber width, snumber height) {
     width++;
     snumber length = width * height;

@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 #include "queue.h"
 
-Queue* newQueue() {
+Queue* newQueue(void) {
     Queue* queue = malloc(sizeof(Queue));
 
     queue->write_index = 0;

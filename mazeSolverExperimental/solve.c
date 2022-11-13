@@ -2,7 +2,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include "include/maze.h"
-#include "include/queue.h"
 
 
 int main(int argc, char* argv[]) {
@@ -55,7 +54,7 @@ int main(int argc, char* argv[]) {
 #ifdef VISUALIZE
     usleep(2000000);
 #else
-    //printMaze(maze);
+    printMaze(maze);
 #endif
 
     printf("Took %f seconds to solve maze (height=%d, width=%d)", elapsed_secs, height, width);

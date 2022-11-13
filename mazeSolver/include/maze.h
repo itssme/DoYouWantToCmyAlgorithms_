@@ -6,8 +6,8 @@
 #include <ncurses.h>
 #include <unistd.h>
 
-WINDOW* window;
-bool setup;
+extern WINDOW* window;
+extern bool setup;
 #endif
 
 #include "types.h"
